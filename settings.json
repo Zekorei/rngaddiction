@@ -1,0 +1,8 @@
+{
+  "config": "settings",
+  "cursor": {
+    "icon": ">",
+    "color": "default",
+    "is_bold": false
+  }
+}

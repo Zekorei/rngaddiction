@@ -1,0 +1,18 @@
+{
+  "rarity": [
+    "Basic",
+    "Common",
+    "Uncommon",
+    "Rare",
+    "Epic",
+    "Legendary"
+  ],
+  "color": [
+    "D1D5D8",
+    "f7f7f7",
+    "41A85F",
+    "2C82C9",
+    "9365B8",
+    "FAC51C"
+  ]
+}
