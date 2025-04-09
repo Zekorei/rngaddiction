@@ -44,6 +44,9 @@ class Interface(Generic[T]):
         return f"{self.__name__}(Type[{T}])"
 
     # ---
+    def print_title(self) -> None:
+        print(set_style(self.name + ':', Style.UNDERLINE))
+
     @property
     def elements(self) -> list[T]:
         return self._elements
@@ -65,7 +68,7 @@ class Menu(Interface[T]):
 
     # ---
     def print(self) -> None:
-        print(set_style(self.name + ':', Style.UNDERLINE))
+        self.print_title()
 
         if len(self.options) > 0:
             for index, option in enumerate(self.options):
@@ -102,10 +105,10 @@ class Inventory(Interface[T]):
         self._page = page
 
     def print(self) -> None:
-        print(set_style(self.__name__ + ':', Style.UNDERLINE))
+        self.print_title()
 
+        # TODO: add pages to inventory display
         if len(self.items) > 0:
-            # TODO: add page functionality
             for index, option in enumerate(self.elements):
                 print(list_element(option, index+1, include_tab=True))
         else:
