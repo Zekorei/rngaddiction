@@ -22,3 +22,7 @@ def time(newline=False) -> None:
     timestamp += "\n" if newline else ""
 
     log(timestamp)
+
+def tlog(contents: str) -> None:
+    time()
+    log(": " + contents)
