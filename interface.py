@@ -41,7 +41,7 @@ class Interface(Generic[T]):
             self._elements = elements
 
     def __repr__(self):
-        return f"{self.__name__}(Type[{T}])"
+        return f"{self.__class__.__name__}[{T}]"
 
     # ---
     def print_title(self) -> None:
@@ -89,7 +89,6 @@ class Inventory(Interface[T]):
     def __len__(self):
         return len(self._elements)
 
-    # ---
     @property
     def page(self):
         return self._page
@@ -97,6 +96,7 @@ class Inventory(Interface[T]):
     @property
     def max_page_size(self):
         return self._max_page_size
+    # ---
 
     @page.setter
     def page(self, page: int) -> None:

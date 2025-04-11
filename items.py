@@ -20,7 +20,8 @@ class Item:
         self._rarity = rarity
 
     def __repr__(self) -> str:
-        return f"Item({self.name}: {self.get_rarity(self)})"
+        cls = self.__class__.__name__
+        return f"{cls}({self.name}: {self.get_rarity(self)})"
 
     def __str__(self) -> str:
         return f"{self.get_rarity(self, is_item=True)}"
