@@ -2,6 +2,7 @@ from json import load, dumps
 from os import PathLike
 from typing import Any
 
+
 type JSONDict = dict[str, Any]
 
 INDENT_SIZE = 2
@@ -34,9 +35,7 @@ class Config:
     # ---
     def save(self):
         with open(self.path, "w") as stream:
-            print("saving...")
             stream.write(dumps(self.data, indent=INDENT_SIZE))
-            print("save successful")  # TODO: add timestamp
 
     def update_settings(self) -> None:
         self.data = self.load(self.path)
