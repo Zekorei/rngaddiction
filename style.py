@@ -41,10 +41,12 @@ def set_style(text: str, *styles: style, style_bundle: styleBundle = None) -> st
 
 def hex_to_rgb(h: str) -> tuple[int, int, int]:
     """
+    [deprecated] use hex_style() instead.
+
     Converts a colour code in hex (#FFFFFF) to a rgb code.
 
     :param h: The colour code in hex (#FFFFFF)
-    :return: The corresponding rgb code as a tuple of ints
+    :return: A tuple (r, g, b) of rgb values
     """
 
     h = h.lstrip("#")
@@ -54,15 +56,25 @@ def hex_to_rgb(h: str) -> tuple[int, int, int]:
 
 def rgb(r: int, g: int, b: int) -> style:
     """
-    Takes the rgb values and outputs a style object with representing the color
+    Takes the rgb values and outputs an ANSI code for the color
     as an ANSI escape sequence.
 
     :param r: Value of red
     :param g: Value of green
     :param b: Value of blue
-    :return: An ANSI escape code representing the rgb input
+    :return: An ANSI escape code
     """
     return style(f"\033[38;2;{r};{g};{b}m")
+
+
+def hex_style(h: str) -> style:
+    """
+    Takes a hex color code and outputs ANSI code for the color
+
+    :param h: A hex value (#FFFFFF)
+    :return: An ANSI escape code
+    """
+    return rgb(*hex_to_rgb(h))
 
 
 def colour_test8bit() -> None:
