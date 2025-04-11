@@ -14,6 +14,7 @@ from items import Item
 OPTIONS = ["temp", "settings", "help", "quit"]
 
 
+# --- main
 def main():
     running = True
     settings = Settings(SETTINGS_CONFIG)
@@ -34,6 +35,6 @@ def main():
             running = False
 
 
-# main
+# ---
 if __name__ == "__main__":
     main()
