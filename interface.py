@@ -8,9 +8,8 @@ from style import Style, set_style
 
 T = TypeVar('T')
 
-
-def list_element(element: Any, index: int | None = None,
-                include_tab=False) -> str:
+def print_indexed_item(element: Any, index: int | None = None,
+                       include_tab=False) -> None:
     if element.__str__ is object.__str__:
         raise NotImplemented(
             f"__str__ is not implemented for class {type(element)}.")
@@ -19,7 +18,7 @@ def list_element(element: Any, index: int | None = None,
     stream += set_style(str(index), Style.BOLD) if index else ""
     stream += (" " + str(element))
 
-    return stream
+    print(stream)
 
 
 class Interface(Generic[T]):
@@ -64,15 +63,19 @@ class Menu(Interface[T]):
     def __init__(self, name: str, options: list[T]) -> None:
         super().__init__(name, options)
 
-        self.options = self.elements
+        self._options = self.elements
 
     # ---
+    @property
+    def options(self) -> list[T]:
+        return self._options
+
     def print(self) -> None:
         self.print_title()
 
         if len(self.options) > 0:
-            for index, option in enumerate(self.options):
-                print(list_element(option, index+1, include_tab=True))
+            for i, option in enumerate(self.options):
+                print_indexed_item(option, i + 1, include_tab=True)
         else:
             print(self.EMPTY)
 
@@ -110,7 +113,7 @@ class Inventory(Interface[T]):
         # TODO: add pages to inventory display
         if len(self.items) > 0:
             for index, option in enumerate(self.elements):
-                print(list_element(option, index+1, include_tab=True))
+                print(print_indexed_item(option, index + 1, include_tab=True))
         else:
             print(self.EMPTY)
 
