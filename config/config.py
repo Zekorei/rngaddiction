@@ -40,5 +40,5 @@ class Config:
         with open(self.path, "w") as stream:
             stream.write(dumps(self.data, indent=INDENT_SIZE))
 
-    def update_settings(self) -> None:
+    def update(self) -> None:
         self.data = self.load(self.path)
