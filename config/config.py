@@ -32,6 +32,9 @@ class Config:
         cls = self.__class__.__name__
         return f"{cls}(path={self.path!r}, data={self.data!r})"
 
+    def __getitem__(self, key: str) -> str | Any:
+        return self.data[key]
+
     # ---
     def save(self):
         with open(self.path, "w") as stream:
