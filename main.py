@@ -5,34 +5,37 @@ zekorei
 unnamed gacha game v0.1
 """
 
-from config.settings import Settings
-from config.config import SETTINGS_CONFIG
-from interface import Menu, Inventory
-from items import Item
-
-
-OPTIONS = ["temp", "settings", "help", "quit"]
+# from config.settings import Settings
+# from config.config import SETTINGS_CONFIG
+# from interface import Menu, Inventory
+# from items import Item
+from menus import MainMenu
 
 
 # --- main
 def main():
-    running = True
-    settings = Settings(SETTINGS_CONFIG)
-    inventory = Inventory[Item]("Inventory")
-    main_menu = Menu[str]("Main Menu", OPTIONS)
+    main_menu = MainMenu()
+    settings = main_menu.settings
 
-    while running:
+    while main_menu.running:
+        settings.update()
+
         try:
-            main_menu.print()
-
+            main_menu.display.print()
             print(f"{settings.cursor} ", end="")
             cmd = input()
 
-            print(cmd)
+            match cmd:
+                case "2":
+                    main_menu.settings_display()
+                case "3":
+                    main_menu.help()
+                case "4":
+                    main_menu.quit()
 
         except KeyboardInterrupt:
             settings.save()
-            running = False
+            main_menu.running = False
 
 
 # ---

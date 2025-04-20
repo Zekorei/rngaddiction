@@ -1,0 +1,9 @@
+{
+  "name": "Main Menu",
+  "options": [
+    "Play",
+    "Settings",
+    "Help",
+    "Quit"
+  ]
+}
