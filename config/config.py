@@ -24,7 +24,7 @@ class Config:
         self.path = path
 
         if path.endswith(".json"):
-            self.data: JSONDict = self.load(path)
+            self.data = self.load(path)
         else:
             raise TypeError("Unable to read file")
 
