@@ -44,14 +44,6 @@ class Config:
 
         return data
 
-    @staticmethod
-    def file_name(file_path: str | PathLike[str]) -> str:
-        return
-
-    @staticmethod
-    def file_type(file: str):
-        return
-
     # ---
     def __init__(self, file_path: str | PathLike[str]) -> None:
         self.file = File(file_path)
