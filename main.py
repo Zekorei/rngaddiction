@@ -5,12 +5,7 @@ zekorei
 unnamed gacha game v0.1
 """
 
-# from config.settings import Settings
-# from config.config import SETTINGS_CONFIG
-# from interface import Menu, Inventory
-# from items import Item
 from menus import MainMenu
-
 
 # --- main
 def main():
@@ -27,7 +22,7 @@ def main():
 
             match cmd:
                 case "2":
-                    main_menu.settings_display()
+                    main_menu.settings_info()
                 case "3":
                     main_menu.help()
                 case "4":

@@ -20,7 +20,7 @@ class MainMenu:
     def play(self) -> ...:
         pass
 
-    def settings_display(self) -> ...:
+    def settings_info(self) -> ...:
         print("Settings:\n"
               f"- Cursor [{self._settings.data['cursor']['icon']}]\n"
               f"- Color: {self._settings.data['cursor']['color']}")
@@ -43,4 +43,3 @@ class MainMenu:
     def running(self, value) -> None:
         self._settings.save()
         self._running = value
-
