@@ -4,6 +4,10 @@ file for terminal text coloring
 
 from typing import NewType, Final, Iterable
 
+import warnings
+warnings.warn("Use style_new instead", DeprecationWarning,
+              stacklevel=2)
+
 # style types
 style = NewType('style', str)
 type styleBundle = Iterable[style]
