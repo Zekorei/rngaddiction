@@ -5,7 +5,7 @@ class file for item related functions
 from typing import Final
 
 from file_handling import Configs, JSON
-from style_new import Style
+from style import Style
 # from style import style, styleBundle, Style, set_style, hex_to_rgb, rgb
 
 item_config = JSON(Configs.ITEM)

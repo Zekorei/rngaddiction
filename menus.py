@@ -5,7 +5,7 @@ Contains all functions for menus
 from file_handling import JSON, Configs
 from interface import Inventory, Menu
 from items import Item
-from style_new import Style
+from style import Style
 
 config = JSON(Configs.MAIN)
 

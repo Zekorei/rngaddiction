@@ -4,7 +4,7 @@ Operates all interface based functionalities
 from abc import abstractmethod
 from typing import Generic, TypeVar, Any
 
-from style_new import Style, UNDERLINE
+from style import Style, UNDERLINE
 
 # from style import Style, set_style
 

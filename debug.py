@@ -4,8 +4,7 @@ Debugging tools
 """
 
 from datetime import datetime
-from style_new import Style
-from sys import stdout
+from style import Style
 
 DEBUG_RED = "#E6000D"
 DEBUG_RED_S = Style.from_hex(DEBUG_RED)
