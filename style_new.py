@@ -67,6 +67,9 @@ class Style:
         :param end: string appended after the last value, default a newline.
         :return: the input text with ANSI escape sequences applied.
         """
+        if style_list is None:
+            style_list = []
+
         out = "".join(str(style) for style in chain(styles, style_list))
 
         if bold:

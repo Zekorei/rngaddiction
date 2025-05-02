@@ -7,6 +7,7 @@ unnamed gacha game v0.1
 
 from menus import MainMenu
 
+
 # --- main
 def main():
     main_menu = MainMenu()
@@ -16,12 +17,12 @@ def main():
 
         try:
             main_menu.display.print()
-            print(f"{main_menu.get_cursor()} ", end="")
+            main_menu.display_cursor()
             cmd = input()
 
             match cmd:
                 case "2":
-                    main_menu.settings_info()
+                    main_menu.settings()
                 case "3":
                     main_menu.help()
                 case "4":

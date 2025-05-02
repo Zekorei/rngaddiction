@@ -5,13 +5,16 @@ Contains all functions for menus
 from file_handling import JSON, Configs
 from interface import Inventory, Menu
 from items import Item
-from style import set_style, hex_style
+from style_new import Style
 
 config = JSON(Configs.MAIN)
 
 # TODO: context object to store all necessary runtime information; can be return by main on demand
 
 class MainMenu:
+    CURSOR_PATH = "cursor/icon"
+    CURSOR_COLOR = "cursor/color"
+
     def __init__(self):
         self.display = Menu[str](config["name"], config["options"])
         self.inventory = Inventory[Item]("Inventory")
@@ -27,10 +30,10 @@ class MainMenu:
         pass
 
     # add more settings details
-    def settings_info(self) -> ...:
+    def settings(self) -> ...:
         print("Settings:\n"
-              f"- Cursor [{self._settings['cursor/icon']}]\n"
-              f"- Color: {self._settings['cursor/color']}")
+              f"- Cursor [{self._settings[self.CURSOR_PATH]}]\n"
+              f"- Color: {self._settings[self.CURSOR_COLOR]}")
 
     def help(self) -> None:
         print("Help Stuff: \n To be added...")
@@ -39,8 +42,12 @@ class MainMenu:
         self._running = False
 
     def get_cursor(self) -> str:
-        color = hex_style(self._settings['cursor/color'])
-        return set_style(self._settings['cursor/icon'], color)
+        return self._settings[self.CURSOR_PATH]
+
+    def display_cursor(self) -> None:
+        color = Style.from_hex(self._settings[self.CURSOR_COLOR])
+
+        Style.st_print(self.get_cursor() + " ", color, end="")
 
     @property
     def running(self) -> bool:
