@@ -5,13 +5,13 @@ class file for item related functions
 from typing import Final
 
 from file_handling import Configs, JSON
-from style import style, styleBundle, Style, set_style, hex_to_rgb, rgb
+from style import Style
+# from style import style, styleBundle, Style, set_style, hex_to_rgb, rgb
 
 item_config = JSON(Configs.ITEM)
 
 # process item data
-RARITY_COLOR: Final[list[style]] = [rgb(*hex_to_rgb(h))
-                                    for h in item_config["color"]]
+RARITY_COLOR: Final[list[Style]] = [Style.from_hex(h) for h in item_config["color"]]
 RARITY_NAME: Final[list[str]] = item_config["rarity"]
 
 
@@ -37,12 +37,17 @@ class Item:
 
     @staticmethod
     def get_rarity(item: "Item", is_item: bool = False) -> str:
-        rarity = item.rarity
-        styles: styleBundle = [Style.BOLD, RARITY_COLOR[rarity]]
+        # TODO: remove or fix cuz i have no idea what this is
 
-        name = item.name if is_item else RARITY_NAME[rarity]
-
-        return set_style(name, style_bundle=styles)
+        pass
+        # - previous code -
+        # rarity = item.rarity
+        # styles = [Style.BOLD, RARITY_COLOR[rarity]]
+        #
+        # name = item.name if is_item else RARITY_NAME[rarity]
+        #
+        # return set_style(name, style_bundle=styles)
+        # ---
 
 
 class ItemPool:

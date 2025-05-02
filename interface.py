@@ -4,7 +4,9 @@ Operates all interface based functionalities
 from abc import abstractmethod
 from typing import Generic, TypeVar, Any
 
-from style import Style, set_style
+from style import Style, UNDERLINE
+
+# from style import Style, set_style
 
 T = TypeVar('T')
 
@@ -14,11 +16,11 @@ def print_indexed_item(element: Any, index: int | None = None,
         raise NotImplemented(
             f"__str__ is not implemented for class {type(element)}.")
 
-    stream = "\t" if include_tab else ""
-    stream += set_style(str(index), Style.BOLD) if index else ""
-    stream += (" " + str(element))
+    if include_tab:
+        print("\t", end="")
 
-    print(stream)
+    Style.st_print(str(index), bold=True, end="")
+    print(" " + str(element))
 
 
 class Interface(Generic[T]):
@@ -29,7 +31,7 @@ class Interface(Generic[T]):
         if T.__str__ is object.__str__:
             raise NotImplemented(f"__str__ is not implemented for class {T}.")
 
-        return super().__new__(cls, args, kwargs)
+        return super().__new__(cls)
 
     def __init__(self, name: str, elements: list[T] = None) -> None:
         self._name = name
@@ -44,7 +46,7 @@ class Interface(Generic[T]):
 
     # ---
     def print_title(self) -> None:
-        print(set_style(self.name + ':', Style.UNDERLINE))
+        Style.st_print(self._name + ':', UNDERLINE)
 
     @property
     def elements(self) -> list[T]:

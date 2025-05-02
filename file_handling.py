@@ -23,14 +23,16 @@ class File:
         self.full_path = os.path.normpath(file_path)
 
         self._path, self._file = os.path.split(self.full_path)
-        self._name, self._extension = self._file.split(".")
+        self._name, self._extension = os.path.splitext(self._file)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.full_path})"
+        return (f"{self.__class__.__name__}(full_path={self.full_path}, "
+                f"path={self._path}), file={self._file}, name={self._name}, "
+                f"ext={self._extension})")
 
     # ---
     def open(self, mode = "r") -> TextIO:
-        return open(self._path, mode)
+        return open(self.full_path, mode)
 
     def write(self) -> TextIO:
         return self.open(mode="w")

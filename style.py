@@ -1,80 +1,89 @@
 """
 file for terminal text coloring
 """
+from enum import Enum
+from itertools import chain
+from re import compile, match
+from typing import NewType, Final, Iterable, AnyStr
 
-from typing import NewType, Final, Iterable
-
-# style types
-style = NewType('style', str)
-type styleBundle = Iterable[style]
+ANSI_FORMAT = compile(r"\033\[(?:[0-9]+;)*[0-9]+m")
 
 
 class Style:
-    # text style codes
-    BOLD: Final[style] = "\033[1m"
-    UNDERLINE: Final[style] = "\033[4m"
+    # ---
+    def __init__(self, ansi: str) -> None:
+        if ANSI_FORMAT.match(ansi) is None:
+            raise TypeError("Invalid ANSI code")
 
-    END_C: Final[style] = "\033[39;49m" # reset colour
-    END: Final[style] = "\033[0m" # reset all
+        self._code = ansi
+
+    def __str__(self) -> str:
+        return self._code
+
+    def __radd__(self, other: AnyStr) -> AnyStr:
+        return other + str(self)
+
+    @classmethod
+    def from_rgb(cls, r: int, g: int, b: int) -> 'Style':
+        return cls(f"\033[38;2;{r};{g};{b}m")
+
+    @classmethod
+    def from_rgb_t(cls, rgb: tuple[int, int, int]) -> 'Style':
+        return cls.from_rgb(*rgb)
+
+    @classmethod
+    def from_hex(cls, h: str) -> 'Style':
+        return cls.from_rgb_t(cls.hex_to_rgb(h))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self._code})"
+
+    # ---
+    @staticmethod
+    def hex_to_rgb(h: str) -> tuple[int, int, int]:
+        """
+            Converts a colour code in hex (#FFFFFF) to a rgb code.
+
+            :param h: The colour code in hex (#FFFFFF)
+            :return: A tuple (r, g, b) of rgb values
+            """
+        h = h.lstrip("#")
+
+        return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+    @staticmethod
+    def st_print(text: str,
+                 *styles: 'Style',
+                 style_list: Iterable['Style'] | None = None,
+                 bold: bool = False,
+                 end: str = "\n") -> None:
+        """
+        Applies ANSI escape sequences to the input text.
+
+        :param text: input text.
+        :param styles: any number of style sequences.
+        :param style_list: an iterable of style sequences.
+        :param bold: whether the text should be bold, default False.
+        :param end: string appended after the last value, default a newline.
+        :return: the input text with ANSI escape sequences applied.
+        """
+        if style_list is None:
+            style_list = []
+
+        out = "".join(str(style) for style in chain(styles, style_list))
+
+        if bold:
+            out += BOLD
+
+        print(out + text + END, end=end)
 
 
-def set_style(text: str, *styles: style, style_bundle: styleBundle = None) -> str:
-    """
-    Applies ANSI escape sequences to the input text.
+# text styling
+BOLD: Final[Style] = Style("\033[1m")
+UNDERLINE: Final[Style] = Style("\033[4m")
 
-    :param text: The input text
-    :param styles: Any number of style sequences
-    :param style_bundle: An iterable of style sequences
-    :return: The input text with ANSI escape sequences applied
-    """
-    codes = ""
-
-    for code in styles:
-        codes += code
-
-    if style_bundle is not None:
-        for code in style_bundle:
-            codes += code
-
-    return codes + text + Style.END
-
-
-def hex_to_rgb(h: str) -> tuple[int, int, int]:
-    """
-    [deprecated] use hex_style() instead.
-
-    Converts a colour code in hex (#FFFFFF) to a rgb code.
-
-    :param h: The colour code in hex (#FFFFFF)
-    :return: A tuple (r, g, b) of rgb values
-    """
-
-    h = h.lstrip("#")
-
-    return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
-
-
-def rgb(r: int, g: int, b: int) -> style:
-    """
-    Takes the rgb values and outputs an ANSI code for the color
-    as an ANSI escape sequence.
-
-    :param r: Value of red
-    :param g: Value of green
-    :param b: Value of blue
-    :return: An ANSI escape code
-    """
-    return style(f"\033[38;2;{r};{g};{b}m")
-
-
-def hex_style(h: str) -> style:
-    """
-    Takes a hex color code and outputs ANSI code for the color
-
-    :param h: A hex value (#FFFFFF)
-    :return: An ANSI escape code
-    """
-    return rgb(*hex_to_rgb(h))
+END_C: Final[Style] = Style("\033[39;49m")  # reset colour
+END: Final[Style] = Style("\033[0m")  # reset all
 
 
 def colour_test8bit() -> None:
@@ -84,11 +93,11 @@ def colour_test8bit() -> None:
     :return: None
     """
     for i in range(256):
-        print(f"\033[38;5;{i}m {i: >3} {Style.END}", end="")
+        print(f"\033[38;5;{i}m {i: >3} {END}", end="")
 
         if i % 16 == 15:
             print()
 
-    print(Style.END)
+    print(END)
 
     return None
