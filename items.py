@@ -4,14 +4,15 @@ class file for item related functions
 
 from typing import Final
 
-from config.config import Config, ITEM_CONFIG
+from file_handling import Configs, JSON
 from style import style, styleBundle, Style, set_style, hex_to_rgb, rgb
 
-item_config = Config(ITEM_CONFIG)
+item_config = JSON(Configs.ITEM)
 
+# process item data
 RARITY_COLOR: Final[list[style]] = [rgb(*hex_to_rgb(h))
-                                    for h in item_config.data["color"]]
-RARITY_NAME: Final[list[str]] = item_config.data["rarity"]
+                                    for h in item_config["color"]]
+RARITY_NAME: Final[list[str]] = item_config["rarity"]
 
 
 class Item:

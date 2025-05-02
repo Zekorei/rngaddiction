@@ -10,14 +10,13 @@ from menus import MainMenu
 # --- main
 def main():
     main_menu = MainMenu()
-    settings = main_menu.settings
 
     while main_menu.running:
-        settings.update()
+        main_menu.update()
 
         try:
             main_menu.display.print()
-            print(f"{settings.cursor} ", end="")
+            print(f"{main_menu.get_cursor()} ", end="")
             cmd = input()
 
             match cmd:
@@ -29,7 +28,7 @@ def main():
                     main_menu.quit()
 
         except KeyboardInterrupt:
-            settings.save()
+            main_menu.update()
             main_menu.running = False
 
 
