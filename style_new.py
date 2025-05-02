@@ -55,22 +55,24 @@ class Style:
     def st_print(text: str,
                  *styles: 'Style',
                  style_list: Iterable['Style'] | None = None,
-                 bold: bool = False) -> str:
+                 bold: bool = False,
+                 end: str = "\n") -> None:
         """
         Applies ANSI escape sequences to the input text.
 
-        :param text: The input text
-        :param styles: Any number of style sequences
-        :param style_list: An iterable of style sequences
-        :param bold: Whether the text should be bold; default False
-        :return: The input text with ANSI escape sequences applied
+        :param text: input text.
+        :param styles: any number of style sequences.
+        :param style_list: an iterable of style sequences.
+        :param bold: whether the text should be bold, default False.
+        :param end: string appended after the last value, default a newline.
+        :return: the input text with ANSI escape sequences applied.
         """
         out = "".join(str(style) for style in chain(styles, style_list))
 
         if bold:
             out += BOLD
 
-        return out + text + END
+        print(out + text + END, end=end)
 
 
 # text styling
