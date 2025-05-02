@@ -7,10 +7,11 @@ type SupportsJSON = dict | list | str | int | float | bool | None
 
 INDENT_SIZE = 2
 
+
 class Configs:
     MAIN = "data/menus/main_menu.json"
-    SETTINGS = "settings.json"
-    ITEM = "item_data.json"
+    SETTINGS = "data/parameters/settings.json"
+    ITEM = "data/misc/item_data.json"
 
 
 class FileTypeError(Exception):
