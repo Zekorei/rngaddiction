@@ -55,10 +55,10 @@ class Style:
 
 # text styling
 BOLD: Final[Style] = Style("\033[1m")
-UNDERLINE: Final['Style'] = Style("\033[4m")
+UNDERLINE: Final[Style] = Style("\033[4m")
 
-END_C: Final['Style'] = Style("\033[39;49m")  # reset colour
-END: Final['Style'] = Style("\033[0m")  # reset all
+END_C: Final[Style] = Style("\033[39;49m")  # reset colour
+END: Final[Style] = Style("\033[0m")  # reset all
 
 
 def colour_test8bit() -> None:
