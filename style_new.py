@@ -1,11 +1,13 @@
 """
 file for terminal text coloring
 """
+from enum import Enum
 from itertools import chain
 from re import compile, match
 from typing import NewType, Final, Iterable, AnyStr
 
 ANSI_FORMAT = compile(r"\033\[(?:[0-9]+;)*[0-9]+m")
+
 
 class Style:
     # ---
@@ -17,6 +19,9 @@ class Style:
 
     def __str__(self) -> str:
         return self._code
+
+    def __radd__(self, other: AnyStr) -> AnyStr:
+        return other + str(self)
 
     @classmethod
     def from_rgb(cls, r: int, g: int, b: int) -> 'Style':
@@ -47,10 +52,25 @@ class Style:
         return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
 
     @staticmethod
-    def st_print(text: str, *styles: 'Style', style_list: Iterable['Style'] | None = None) -> str:
+    def st_print(text: str,
+                 *styles: 'Style',
+                 style_list: Iterable['Style'] | None = None,
+                 bold: bool = False) -> str:
+        """
+        Applies ANSI escape sequences to the input text.
+
+        :param text: The input text
+        :param styles: Any number of style sequences
+        :param style_list: An iterable of style sequences
+        :param bold: Whether the text should be bold; default False
+        :return: The input text with ANSI escape sequences applied
+        """
         out = "".join(str(style) for style in chain(styles, style_list))
 
-        return out + text + str(END)
+        if bold:
+            out += BOLD
+
+        return out + text + END
 
 
 # text styling
