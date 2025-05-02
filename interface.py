@@ -22,14 +22,14 @@ def print_indexed_item(element: Any, index: int | None = None,
 
 
 class Interface(Generic[T]):
-    EMPTY = "[empty]"
+    EMPTY = "[empty]" # TODO: make name more descriptive
 
     # ---
     def __new__(cls, *args, **kwargs):
         if T.__str__ is object.__str__:
             raise NotImplemented(f"__str__ is not implemented for class {T}.")
 
-        return super().__new__(cls)
+        return super().__new__(cls, args, kwargs)
 
     def __init__(self, name: str, elements: list[T] = None) -> None:
         self._name = name
