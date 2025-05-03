@@ -20,8 +20,14 @@ class Style:
     def __str__(self) -> str:
         return self._code
 
+    def __add__(self, other: AnyStr) -> AnyStr:
+        return str(self) + other
+
     def __radd__(self, other: AnyStr) -> AnyStr:
         return other + str(self)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self._code})"
 
     @classmethod
     def from_rgb(cls, r: int, g: int, b: int) -> 'Style':
@@ -34,9 +40,6 @@ class Style:
     @classmethod
     def from_hex(cls, h: str) -> 'Style':
         return cls.from_rgb_t(cls.hex_to_rgb(h))
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}({self._code})"
 
     # ---
     @staticmethod
