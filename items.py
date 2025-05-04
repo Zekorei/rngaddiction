@@ -1,14 +1,22 @@
 """
 class file for item related functions
 """
-
+from enum import IntEnum
+from os import PathLike
 from typing import Final
 
 from file_handling import Configs, JSON
 from style import Style
-# from style import style, styleBundle, Style, set_style, hex_to_rgb, rgb
 
-item_config = JSON(Configs.ITEM)
+item_config = JSON(Configs.RARITIES)
+
+class Rarity(IntEnum):
+    BASIC = 0
+    COMMON = 1
+    UNCOMMON = 2
+    RARE = 3
+    EPIC = 4
+    LEGENDARY = 5
 
 # process item data
 RARITY_COLOR: Final[list[Style]] = [Style.from_hex(h) for h in item_config["color"]]
@@ -16,16 +24,26 @@ RARITY_NAME: Final[list[str]] = item_config["rarity"]
 
 
 class Item:
-    def __init__(self, name: str, rarity: int = 0) -> None:
-        self.name = name
+    def __init__(self, name: str, rarity: Rarity = Rarity.BASIC) -> None:
+        self._name = name
         self._rarity = rarity
+
+    @classmethod
+    def from_json(cls, path: str | PathLike[str]) -> 'Item':
+        item_dat = JSON(path)
+
+        return cls(item_dat["name"], Rarity(item_dat["rarity"]))
 
     def __repr__(self) -> str:
         cls = self.__class__.__name__
-        return f"{cls}({self.name}: {self.get_rarity(self)})"
+        return f"{cls}(name={self.name}, rarity={self._rarity})"
 
     def __str__(self) -> str:
-        return f"{self.get_rarity(self, is_item=True)}"
+        return f"{self._name}"
+
+    @property
+    def name(self) -> str:
+        return self._name
 
     @property
     def rarity(self) -> int:
@@ -35,30 +53,18 @@ class Item:
     def rarity(self, value) -> None:
         self._rarity = value
 
-    @staticmethod
-    def get_rarity(item: "Item", is_item: bool = False) -> str:
-        # TODO: remove or fix cuz i have no idea what this is
 
-        pass
-        # - previous code -
-        # rarity = item.rarity
-        # styles = [Style.BOLD, RARITY_COLOR[rarity]]
-        #
-        # name = item.name if is_item else RARITY_NAME[rarity]
-        #
-        # return set_style(name, style_bundle=styles)
-        # ---
+# TODO: Item banner with weights and ability to draw an item
+#  - store items in a way that has weights and qty dropped
+#  - pity system
+#  - rarity up events etc.
+#  - populate or random draw
+"""
+static system
 
-
-class ItemPool:
-    # ---
-    def __init__(self, pool: list[Item]) -> None:
-        self._pool = pool
-
-    # ---
-    @property
-    def pool(self) -> list[Item]:
-        return self._pool
-
-    def insert(self, item: Item) -> None:
-        self._pool.append(item)
+class:
+    items: tuple[Item, int, int] - list(Item, weight, qty)
+    pity_count: int
+    
+    
+"""
