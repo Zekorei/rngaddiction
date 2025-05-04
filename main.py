@@ -7,30 +7,36 @@ unnamed gacha game v0.1
 
 from menus import MainMenu
 
+def start_up() -> MainMenu:
+    pass
+    # TODO: load item data
+    # TODO: load banner data
+    # TODO: construct game context
+    
 
 # --- main
 def main():
-    main_menu = MainMenu()
+    game = start_up()
 
-    while main_menu.running:
-        main_menu.update()
+    while game.running:
+        game.update_settings()
 
         try:
-            main_menu.display.print()
-            main_menu.display_cursor()
+            game.display.print()
+            game.display_cursor()
             cmd = input()
 
             match cmd:
                 case "2":
-                    main_menu.settings()
+                    game.settings()
                 case "3":
-                    main_menu.help()
+                    game.help()
                 case "4":
-                    main_menu.quit()
+                    game.quit()
 
         except KeyboardInterrupt:
-            main_menu.update()
-            main_menu.running = False
+            game.update_settings()
+            game.running = False
 
 
 # ---

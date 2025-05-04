@@ -22,7 +22,7 @@ class MainMenu:
         self._is_running = True
 
     # ---
-    def update(self):
+    def update_settings(self):
         self._settings.save()
 
     # TODO: make game functional
