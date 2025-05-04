@@ -1,7 +1,7 @@
 import os
 from json import load, dumps
 from os import PathLike
-from typing import Any, TextIO, Literal
+from typing import TextIO, Generator
 
 type SupportsJSON = dict | list | str | int | float | bool | None
 
@@ -11,7 +11,8 @@ INDENT_SIZE = 2
 class Configs:
     MAIN = "data/menus/main_menu.json"
     SETTINGS = "data/parameters/settings.json"
-    ITEM = "data/misc/item_data.json"
+    RARITIES = "data/misc/item_rarities.json"
+    ITEMS = "assets/condensed/items/csv"
 
 
 class FileTypeError(Exception):
@@ -53,7 +54,6 @@ class File:
         return self._extension
 
 
-# TODO: generalize to a json object with path lookup
 class JSON:
     # ---
     def __init__(self, file_path: str | PathLike[str]) -> None:
@@ -68,12 +68,13 @@ class JSON:
         cls = self.__class__.__name__
         return f"{cls}(file={self.file!r}, data={self.data!r})"
 
-    # TODO: implement directory search
-    """
-    Default __getitem__ override with path lookup. Use standard os delimiter to
-    indicate subdirectories.
-    """
     def __getitem__(self, path: str | PathLike[str]) -> SupportsJSON:
+        """
+        Path lookup. Use standard os delimiter to indicate subdirectories.
+
+        :param path: path to entry
+        :return: the entry in the json
+        """
         path = os.path.normpath(path)
         process = self.data
 
@@ -82,7 +83,6 @@ class JSON:
 
         return process
 
-
     # ---
     def load(self) -> dict[SupportsJSON]:
         with self.file.read() as stream:
@@ -90,9 +90,27 @@ class JSON:
 
         return json
 
-    def save(self):
+    def save(self) -> None:
         with self.file.write() as stream:
             stream.write(dumps(self.data, indent=INDENT_SIZE))
 
     def update(self) -> None:
         self.data = self.load()
+
+
+class CSV:
+    def __init__(self, file_path: str | PathLike[str],
+                 types: tuple[SupportsJSON, ...]) -> None:
+        self.file = File(file_path)
+        self.types = types
+
+        if self.file.extension != ".csv":
+            raise FileTypeError(f"Unable to read file extension ({self.file.extension})")
+
+    def __next__(self) -> Generator[tuple[SupportsJSON, ...], None, None]:
+        with self.file.read() as stream:
+            for line in stream:
+                yield tuple(self.types[i](token) for i, token in enumerate(line.split(",")))
+
+    def __iter__(self) -> 'CSV':
+        return self
