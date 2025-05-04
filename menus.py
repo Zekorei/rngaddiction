@@ -19,7 +19,7 @@ class MainMenu:
         self.display = Menu[str](config["name"], config["options"])
         self.inventory = Inventory[Item]("Inventory")
         self._settings = JSON(Configs.SETTINGS)
-        self._running = True
+        self._is_running = True
 
     # ---
     def update(self):
@@ -39,7 +39,7 @@ class MainMenu:
         print("Help Stuff: \n To be added...")
 
     def quit(self) -> None:
-        self._running = False
+        self._is_running = False
 
     def get_cursor(self) -> str:
         return self._settings[self.CURSOR_PATH]
@@ -50,9 +50,9 @@ class MainMenu:
         Style.st_print(self.get_cursor() + " ", color, end="")
 
     @property
-    def running(self) -> bool:
-        return self._running
+    def is_running(self) -> bool:
+        return self._is_running
 
     @running.setter
-    def running(self, value) -> None:
-        self._running = value
+    def is_running(self, value) -> None:
+        self._is_running = value
