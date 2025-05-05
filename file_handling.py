@@ -12,7 +12,7 @@ class Configs:
     MAIN = "data/menus/main_menu.json"
     SETTINGS = "data/parameters/settings.json"
     RARITIES = "data/misc/item_rarities.json"
-    ITEMS = "assets/condensed/items/csv"
+    ITEMS_ARRAY = "assets/condensed/items.csv"
 
 
 class FileTypeError(Exception):
@@ -100,7 +100,7 @@ class JSON:
 
 class CSV:
     def __init__(self, file_path: str | PathLike[str],
-                 types: tuple[SupportsJSON, ...]) -> None:
+                 types: tuple[type, ...]) -> None:
         self.file = File(file_path)
         self.types = types
 
