@@ -1,10 +1,51 @@
 from contextlib import redirect_stdout
 from io import StringIO
 
+import pytest
+
 from style import Style, BOLD, END
 
 
 class TestStyle:
+    def test_correct_ansi_code(self):
+        s = Style("\033[23;1;3m")
+
+    def test_incorrect_ansi_code_1(self):
+        with pytest.raises(TypeError):
+            s = Style("\033[;23;23m")
+
+    def test_incorrect_ansi_code_2(self):
+        with pytest.raises(TypeError):
+            s = Style("\033[23;23;m")
+
+    def test_incorrect_ansi_code_3(self):
+        with pytest.raises(TypeError):
+            s = Style("\033[-jav3m")
+
+    def test_incorrect_ansi_code_4(self):
+        with pytest.raises(TypeError):
+            s = Style("not an ansi code")
+
+    def test_string_representation(self):
+        s = Style("\033[1;2;3m")
+
+        assert "\033[1;2;3m" == str(s)
+
+    def test_left_addition(self):
+        s = Style("\033[1;2;3m")
+
+        assert "\033[1;2;3m test" == s + " test"
+
+    def test_right_addition(self):
+        s = Style("\033[1;2;3m")
+
+        assert "test \033[1;2;3m" == "test " + s
+
+    def test_repr(self):
+        s = Style("\033[1;2;3m")
+
+        assert "Style(\033[1;2;3m)" == repr(s)
+
     def test_from_rgb_1(self):
         s = Style.from_rgb(0, 0, 0)
 
