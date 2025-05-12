@@ -28,7 +28,7 @@ class File:
 
     def __repr__(self):
         return (f"{self.__class__.__name__}(full_path={self.full_path}, "
-                f"path={self._path}), file={self._file}, name={self._name}, "
+                f"path={self._path}, file={self._file}, name={self._name}, "
                 f"ext={self._extension})")
 
     # ---
