@@ -53,6 +53,6 @@ class MainMenu:
     def is_running(self) -> bool:
         return self._is_running
 
-    @running.setter
+    @is_running.setter
     def is_running(self, value) -> None:
         self._is_running = value

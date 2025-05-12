@@ -18,7 +18,7 @@ def start_up() -> MainMenu:
 def main():
     game = start_up()
 
-    while game.running:
+    while game.is_running:
         game.update_settings()
 
         try:
@@ -36,7 +36,7 @@ def main():
 
         except KeyboardInterrupt:
             game.update_settings()
-            game.running = False
+            game.is_running = False
 
 
 # ---
